@@ -12,7 +12,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.sql.Date;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -37,7 +38,7 @@ public class User {
     private String ssn;
 
     @NotNull
-    private Date dob;
+    private LocalDate dob;
 
     @CreationTimestamp
     private LocalDateTime created;

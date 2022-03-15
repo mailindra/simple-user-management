@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @Slf4j
@@ -29,7 +31,7 @@ public class UserService {
         User user = findUserById(userId);
         user.setName(dto.getName());
         user.setSsn(formatSocialSecurityNumber(dto.getSsn()));
-        user.setDob(dto.getDob());
+        user.setDob(convertDOB(dto.getDob()));
         return userRepository.saveAndFlush(user);
     }
 
@@ -49,10 +51,11 @@ public class UserService {
     protected User createUserEntityValue(UserDto dto){
         String defaultCreator ="SPRING_BOOT_TEST";
         String socialSecurityNumber = formatSocialSecurityNumber( dto.getSsn());
+        LocalDate dob = convertDOB(dto.getDob());
         User user = new User();
         user.setName(dto.getName());
         user.setSsn(socialSecurityNumber);
-        user.setDob(dto.getDob());
+        user.setDob(dob);
         user.setCreatedBy(defaultCreator);
         user.setUpdatedBy(defaultCreator);
         return user;
@@ -60,5 +63,11 @@ public class UserService {
 
     protected String formatSocialSecurityNumber(int ssnInInteger){
         return String.format("%05d", ssnInInteger);
+    }
+
+    protected LocalDate convertDOB(String dobString){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
+        LocalDate dob = LocalDate.parse(dobString,dateFormatter);
+        return dob;
     }
 }

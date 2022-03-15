@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -24,8 +25,8 @@ class UserServiceUnitTest {
         testingUser = User.builder()
                 .id(123L)
                 .name("Testing User")
-                .ssn("123-123-123")
-                .dob(Date.valueOf("2022-03-12"))
+                .ssn("12345")
+                .dob(LocalDate.parse("2022-03-12"))
                 .created(LocalDateTime.now())
                 .updated(LocalDateTime.now())
                 .createdBy(defaultCreator)
@@ -40,11 +41,11 @@ class UserServiceUnitTest {
 
     @Test
     void createUser() {
-        UserDto dto = new UserDto("Testing User", 19,Date.valueOf("2022-03-12"));
+        UserDto dto = new UserDto("Testing User", 19,"2022-03-12");
         User createdUser = userService.createUser(dto);
         Assertions.assertEquals("Testing User",createdUser.getName());
-        Assertions.assertEquals("123-123-123",createdUser.getSsn());
-        Assertions.assertEquals(Date.valueOf("2022-03-12"), createdUser.getDob());
+        Assertions.assertEquals("12345",createdUser.getSsn());
+        Assertions.assertEquals(LocalDate.parse("2022-03-12"), createdUser.getDob());
         Assertions.assertEquals(defaultCreator, createdUser.getCreatedBy());
         Assertions.assertEquals(defaultCreator,createdUser.getUpdatedBy());
     }

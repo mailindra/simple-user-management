@@ -1,9 +1,15 @@
 package com.mailindra.demo.simpleUserManagement.controller.dto;
 
-import lombok.*;
+import com.mailindra.demo.simpleUserManagement.controller.validator.ValidDOBConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
-import java.sql.Date;
+import java.util.Date;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +27,9 @@ public class UserDto {
     private int ssn;
 
     @NotNull
-    private Date dob;
+    @ValidDOBConstraint()
+    //@DateTimeFormat(pattern="yyyy-MM-dd")
+    private String dob;
 
 
 }
