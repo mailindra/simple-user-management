@@ -1,6 +1,7 @@
 package com.mailindra.demo.simpleUserManagement.service;
 
 import com.mailindra.demo.simpleUserManagement.controller.dto.UserDto;
+import com.mailindra.demo.simpleUserManagement.controller.dto.UserUpdateDto;
 import com.mailindra.demo.simpleUserManagement.domain.User;
 import com.mailindra.demo.simpleUserManagement.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +28,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUser(Long userId, UserDto dto)  {
+    public User updateUser(Long userId, UserUpdateDto dto)  {
         User user = findUserById(userId);
         user.setName(dto.getName());
-        user.setSsn(formatSocialSecurityNumber(dto.getSsn()));
         user.setDob(convertDOB(dto.getDob()));
         return userRepository.saveAndFlush(user);
     }

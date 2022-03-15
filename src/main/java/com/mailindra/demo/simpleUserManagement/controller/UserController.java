@@ -1,6 +1,7 @@
 package com.mailindra.demo.simpleUserManagement.controller;
 
 import com.mailindra.demo.simpleUserManagement.controller.dto.UserDto;
+import com.mailindra.demo.simpleUserManagement.controller.dto.UserUpdateDto;
 import com.mailindra.demo.simpleUserManagement.domain.User;
 import com.mailindra.demo.simpleUserManagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,12 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDto dto){
         User createdUser = userService.createUser(dto);
-        return new ResponseEntity<>(createdUser, HttpStatus.OK);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") Long userId, @Valid @RequestBody UserDto userDto){
-        User updatedUser = userService.updateUser(userId,userDto);
+    public ResponseEntity<User> updateUser(@PathVariable("id") Long userId, @Valid @RequestBody UserUpdateDto dto){
+        User updatedUser = userService.updateUser(userId,dto);
         return new ResponseEntity<>(updatedUser,HttpStatus.OK);
     }
 
