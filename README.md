@@ -5,3 +5,5 @@ Framework and libraries:
 * JPA
 * Lombok
 * H2
+
+This version using H2 in memory.
