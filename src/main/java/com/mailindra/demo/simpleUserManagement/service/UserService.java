@@ -3,6 +3,7 @@ package com.mailindra.demo.simpleUserManagement.service;
 import com.mailindra.demo.simpleUserManagement.controller.dto.UserDto;
 import com.mailindra.demo.simpleUserManagement.controller.dto.UserUpdateDto;
 import com.mailindra.demo.simpleUserManagement.domain.User;
+import com.mailindra.demo.simpleUserManagement.exception.ConflictBusinessException;
 import com.mailindra.demo.simpleUserManagement.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -24,6 +25,12 @@ public class UserService {
     }
 
     public User createUser(UserDto dto){
+        String socialSecurityNumber = formatSocialSecurityNumber( dto.getSsn());
+        Optional<User> existingUserWithSSNActive = userRepository.findBySsnAndIsDeleted(socialSecurityNumber, Boolean.FALSE);
+        if(existingUserWithSSNActive.isPresent())
+            throw new ConflictBusinessException("CONFLICT",30002,
+                    "Record with SSN "+ socialSecurityNumber +" already exists in the system");
+
         User user = createUserEntityValue(dto);
         return userRepository.save(user);
     }

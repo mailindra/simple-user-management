@@ -40,7 +40,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteUser(@PathVariable("id")Long userId){
-        return userService.deleteUser(userId);
+    public ResponseEntity deleteUser(@PathVariable("id")Long userId){
+        userService.deleteUser(userId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
