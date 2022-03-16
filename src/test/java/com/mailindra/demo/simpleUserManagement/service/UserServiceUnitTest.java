@@ -18,6 +18,7 @@ class UserServiceUnitTest {
     User testingUser;
     UserService userService;
     String defaultCreator ="SPRING_BOOT_TEST";
+    String ssn="12345";
 
     @BeforeEach
     void setUp() {
@@ -25,7 +26,7 @@ class UserServiceUnitTest {
         testingUser = User.builder()
                 .id(123L)
                 .name("Testing User")
-                .ssn("12345")
+                .ssn(ssn)
                 .dob(LocalDate.parse("2022-03-12"))
                 .created(LocalDateTime.now())
                 .updated(LocalDateTime.now())
@@ -34,17 +35,16 @@ class UserServiceUnitTest {
                 .build();
         userService = new UserService(userRepository);
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testingUser);
-        //Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(testingUser));
         Mockito.when(userRepository.findByIdAndIsDeleted(Mockito.any(),Mockito.any())).thenReturn(Optional.of(testingUser));
 
     }
 
     @Test
     void createUser() {
-        UserDto dto = new UserDto("Testing User", "12345","2022-03-12");
+        UserDto dto = new UserDto("Testing user", ssn, "2022-03-12");
         User createdUser = userService.createUser(dto);
         Assertions.assertEquals("Testing User",createdUser.getName());
-        Assertions.assertEquals("12345",createdUser.getSsn());
+        Assertions.assertEquals(ssn,createdUser.getSsn());
         Assertions.assertEquals(LocalDate.parse("2022-03-12"), createdUser.getDob());
         Assertions.assertEquals(defaultCreator, createdUser.getCreatedBy());
         Assertions.assertEquals(defaultCreator,createdUser.getUpdatedBy());
@@ -55,5 +55,20 @@ class UserServiceUnitTest {
         User foundUser = userService.findUserById(123L);
         Assertions.assertEquals(123L, foundUser.getId());
 
+    }
+
+    @Test
+    void testConvertDOB_Success(){
+        String dobString ="2022-01-12";
+        LocalDate dob = userService.convertDOB(dobString);
+        Assertions.assertEquals(2022, dob.getYear());
+        Assertions.assertEquals(1, dob.getMonthValue());
+        Assertions.assertEquals(12, dob.getDayOfMonth());
+    }
+
+    @Test
+    void testFormatSsn_Success(){
+        String ssn = userService.formatSocialSecurityNumber("13");
+        Assertions.assertEquals("00013", ssn);
     }
 }
