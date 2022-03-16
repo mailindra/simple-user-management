@@ -22,9 +22,10 @@ public class UserDto {
     @Size(min = 2, max = 50)
     private String name;
 
-    @NotNull
-    @Digits(integer = 5, fraction = 0)
-    private int ssn;
+    @NotBlank
+    @Pattern(regexp = "^[0-9]+$")
+    @Size(max = 5)
+    private String ssn;
 
     @NotNull
     @ValidDOBConstraint()

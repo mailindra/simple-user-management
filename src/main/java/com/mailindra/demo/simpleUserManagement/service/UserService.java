@@ -68,13 +68,12 @@ public class UserService {
         return user;
     }
 
-    protected String formatSocialSecurityNumber(int ssnInInteger){
-        return String.format("%05d", ssnInInteger);
+    protected String formatSocialSecurityNumber(String ssnInInteger){
+        return String.format("%05d", Integer.valueOf(ssnInInteger));
     }
 
     protected LocalDate convertDOB(String dobString){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
-        LocalDate dob = LocalDate.parse(dobString,dateFormatter);
-        return dob;
+        return LocalDate.parse(dobString,dateFormatter);
     }
 }

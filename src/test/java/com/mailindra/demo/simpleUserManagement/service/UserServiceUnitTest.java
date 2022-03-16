@@ -41,7 +41,7 @@ class UserServiceUnitTest {
 
     @Test
     void createUser() {
-        UserDto dto = new UserDto("Testing User", 19,"2022-03-12");
+        UserDto dto = new UserDto("Testing User", "12345","2022-03-12");
         User createdUser = userService.createUser(dto);
         Assertions.assertEquals("Testing User",createdUser.getName());
         Assertions.assertEquals("12345",createdUser.getSsn());
